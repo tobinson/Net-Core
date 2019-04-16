@@ -19,14 +19,18 @@ namespace sistemaAspCore.Controllers
         }
 
         // GET: Categorias
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder,string buscar)
         {
             ViewData["Nombresort"] = string.IsNullOrEmpty(sortOrder) ? "nombre_desc" : "";
             ViewData["Descripcionsort"] =sortOrder=="descripcion_asc"?"descripcion_desc": "descripcion_asc";
-            
+
+            ViewData["filtro"] = buscar;
             //obtengo el listado de categorias
             var categorias = from s in _context.Categoria select s;
-
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                categorias = categorias.Where(s => s.Nombre.Contains(buscar)||s.Descripcion.Contains(buscar));
+            }
             switch (sortOrder)
             {
                 case "nombre_desc":
