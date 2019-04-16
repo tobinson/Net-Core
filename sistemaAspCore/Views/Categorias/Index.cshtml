@@ -1,0 +1,47 @@
+﻿@model IEnumerable<sistemaAspCore.Models.Categoria>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Categoria Cursos</h1>
+
+<p>
+    <a asp-action="Create"><button class="btn btn-primary">Nuevo</button></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Nombresort"]">@Html.DisplayNameFor(model => model.Nombre)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Descripcionsort"]">@Html.DisplayNameFor(model => model.Descripcion)</a>
+            </th>
+            <th>
+                <a asp-action="Index">@Html.DisplayNameFor(model => model.Estado)</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CategoriaID">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.CategoriaID">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.CategoriaID">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
