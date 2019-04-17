@@ -19,12 +19,23 @@ namespace sistemaAspCore.Controllers
         }
 
         // GET: Categorias
-        public async Task<IActionResult> Index(string sortOrder,string buscar)
+        public async Task<IActionResult> Index(string sortOrder,string buscar,
+                                               string filtro, int? page)
+
         {
             ViewData["Nombresort"] = string.IsNullOrEmpty(sortOrder) ? "nombre_desc" : "";
             ViewData["Descripcionsort"] =sortOrder=="descripcion_asc"?"descripcion_desc": "descripcion_asc";
 
+            if (buscar != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                buscar = filtro;
+            }
             ViewData["filtro"] = buscar;
+            ViewData["currentSort"] = sortOrder;
             //obtengo el listado de categorias
             var categorias = from s in _context.Categoria select s;
             if (!string.IsNullOrEmpty(buscar))
@@ -46,9 +57,12 @@ namespace sistemaAspCore.Controllers
                     categorias = categorias.OrderBy(s => s.Nombre);
                     break;
             }
-            return View(await categorias.AsNoTracking().ToListAsync());
+            int pagesize = 3;
+            return View(await Paginacion<Categoria>.CreateAsync(categorias.AsNoTracking(), page ?? 1, pagesize));
+            //return View(await categorias.AsNoTracking().ToListAsync());
             //return View(await _context.Categoria.ToListAsync());
         }
+
 
         // GET: Categorias/Details/5
         public async Task<IActionResult> Details(int? id)
