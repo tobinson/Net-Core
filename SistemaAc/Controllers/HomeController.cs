@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SistemaAc.Models;
+//using agregado para authorize
+using Microsoft.AspNetCore.Authorization;
 
 namespace SistemaAc.Controllers
 {
@@ -14,7 +16,7 @@ namespace SistemaAc.Controllers
         {
             return View();
         }
-
+        [Authorize(Roles="Administrador")]
         public IActionResult Privacy()
         {
             return View();
